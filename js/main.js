@@ -24,9 +24,6 @@ FIXES
 [-] take back DAT.GUI (unhide)
 [-] planned, [x] done, [!] please read comments
 
-polynomials
-shaders as displacement
-
 REFERENCES:
 https://github.com/mrdoob/three.js/blob/master/examples/canvas_camera_orthographic2.html
 
@@ -61,7 +58,7 @@ window.onload = function() {
 var mapping = { min: 1E-3, max: 255.0 };
 
 var container, stats;
-var camera, controls, scene, renderer;
+var camera, controls, scene, renderer, plane;
 var clock = new THREE.Clock();
 
 var loader = new THREE.TextureLoader();
@@ -84,7 +81,7 @@ jQuery('#Ready').click(function() {
                         function ( texture ) {
                            
                         //$(gui.domElement).attr("hidden", false);
-                        init(texture);  
+                        init(texture, 225);  
 
                         },
                         function ( xhr ) {
@@ -226,7 +223,7 @@ function init(texture_) {
     geometry.computeVertexNormals();
     geometry.computeFaceNormals();
     
-    var plane = new THREE.Mesh(geometry, material);
+    plane = new THREE.Mesh(geometry, material);
     plane.receiveShadow = true;
 
     scene.add(plane);
@@ -308,6 +305,7 @@ function animate() {
 
 function render() {
     
+    controls.collisionDetection(camera, plane);
     controls.update( clock.getDelta() );
     renderer.render( scene, camera );
     
